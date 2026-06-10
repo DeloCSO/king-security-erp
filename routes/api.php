@@ -40,12 +40,13 @@ use App\Http\Controllers\EInvoicePeppolController;
 use App\Http\Controllers\EInvoiceTokenController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EmailHistoryController;
+use App\Http\Controllers\GuardController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FilterController;
-use App\Http\Controllers\GroupSettingController;
+
 use App\Http\Controllers\HostedMigrationController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\ImportJsonController;
@@ -499,10 +500,12 @@ Route::post('stripe/disconnect/{company_gateway_id}', [StripeController::class, 
     // Route::post('apple_pay/upload_file','ApplyPayController::class, 'upload');
 
     Route::post('yodlee/status/{account_number}', [YodleeController::class, 'accountStatus']); // @todo @turbo124 check route-path?!
+Route::get('nordigen/institutions', [NordigenController::class, 'institutions'])->name('nordigen.institutions');
 
-    Route::get('nordigen/institutions', [NordigenController::class, 'institutions'])->name('nordigen.institutions');
+Route::resource('guards', GuardController::class);
 
 });
+
 
 Route::post('api/v1/sms_reset', [TwilioController::class, 'generate2faResetCode'])->name('sms_reset.generate')->middleware('throttle:daily-verify');
 Route::post('api/v1/sms_reset/confirm', [TwilioController::class, 'confirm2faResetCode'])->name('sms_reset.confirm')->middleware('throttle:daily-verify');
